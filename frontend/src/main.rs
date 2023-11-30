@@ -1,5 +1,6 @@
 mod pages;
 mod components;
+mod api;
 
 use yew::prelude::*;
 use pages::login::{Login};
