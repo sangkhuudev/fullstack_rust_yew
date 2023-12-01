@@ -16,7 +16,7 @@ pub struct MeResponse {
     pub created_at: String,
 }
 
-pub async fn api_login(username: String, password: String) -> Result<LoginResponse, Error> {
+pub async fn api_login(username: &String, password: &String) -> Result<LoginResponse, Error> {
     let response = Request::post(&format!("{}/login", API_HOST))
         .json(&json!({
             "username": username,

@@ -1,15 +1,20 @@
 mod pages;
 mod components;
 mod api;
+// mod components;
+// mod pages;
 
 use yew::prelude::*;
-use pages::login::{Login};
+use yew_router::prelude::*;
+use pages::navigator::*;
 
 
 #[function_component(App)]
 fn app() -> Html {
     html! {
-        <Login />
+        <BrowserRouter>
+            <Switch<Route> render={switch} />
+        </BrowserRouter>
     }
 }
 
