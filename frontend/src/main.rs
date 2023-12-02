@@ -1,8 +1,7 @@
 mod pages;
 mod components;
 mod api;
-// mod components;
-// mod pages;
+mod context;
 
 use yew::prelude::*;
 use yew_router::prelude::*;
@@ -13,7 +12,10 @@ use pages::navigator::*;
 fn app() -> Html {
     html! {
         <BrowserRouter>
-            <Switch<Route> render={switch} />
+            <context::CurrentUserProvider>
+                <Switch<Route> render={switch} />
+            </context::CurrentUserProvider>
+
         </BrowserRouter>
     }
 }
