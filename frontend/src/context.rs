@@ -1,7 +1,8 @@
+use yew::platform::spawn_local;
 use yew::{UseReducerHandle, Reducible};
 use yew::prelude::*;
-use crate::api::user::{User, MeResponse, LoginResponse};
-
+use crate::api::user::{User, MeResponse, LoginResponse, api_me};
+use gloo_storage::{Storage, SessionStorage};
 pub type CurrentUserContext = UseReducerHandle<CurrentUser>;
 
 
@@ -18,7 +19,7 @@ impl Reducible for CurrentUser {
             CurrentUserActions::LoginSuccess =>  {
                 let login_resp = action.login_response.expect("Missing login response");
                 let me_resp = action.me_response.expect("Missing me response");
-
+                let _ = SessionStorage::set("yew_token", login_resp.token.clone());
                 Self {
                     user: Some( User {
                         id: me_resp.id,
@@ -59,7 +60,24 @@ pub struct Props {
 #[function_component(CurrentUserProvider)]
 pub fn current_user_provider(props: &Props) -> Html {
     let user = use_reducer(CurrentUser::default);
-
+    if user.user.is_none() {
+        if let Ok(token) = SessionStorage::get::<String>("yew_token") {
+            let cloned_user = user.clone();
+            spawn_local(async move {
+                match api_me(&token).await {
+                    Ok(me_response) => {
+                        cloned_user.dispatch(CurrentUserDispatcherAction {
+                            action_type: CurrentUserActions::LoginSuccess,
+                            login_response: Some( LoginResponse { token }),
+                            me_response: Some(me_response),
+    
+                        });
+                    },
+                    Err(_) => SessionStorage::clear()
+                }
+            })
+        }
+    }
     html! {
         <ContextProvider<CurrentUserContext> context={user}>
             {props.children.clone()}
