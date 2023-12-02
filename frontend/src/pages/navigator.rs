@@ -31,7 +31,7 @@ pub fn switch(route: Route) -> Html {
             <NotFound />
         },
         _ => html! {
-            <NotFound />
+            <Home />
         },
     }
 }
