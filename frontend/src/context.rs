@@ -31,6 +31,7 @@ impl Reducible for CurrentUser {
             },
 
             CurrentUserActions::LoginFailure => {
+                SessionStorage::clear();
                 Self {
                     user: None,
                     token: None,
