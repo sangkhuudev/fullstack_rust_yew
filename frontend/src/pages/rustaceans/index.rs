@@ -1,8 +1,8 @@
-use crate::components::{header::Header, sidebar::Sidebar};
+use crate::components::{header::Header, sidebar::Sidebar, rustacean_list::RustaceanList};
 use yew::prelude::*;
 
-#[function_component(Home)]
-pub fn home() -> Html {
+#[function_component(Rustaceans)]
+pub fn rustaceans() -> Html {
     html! {
 
         <div class="container">
@@ -12,7 +12,7 @@ pub fn home() -> Html {
                 </div>
                 <div class="col mt-3">
                     <Header />
-                    {"Have a nice day"}
+                    <RustaceanList />
                 </div>
             </div>
         </div>
