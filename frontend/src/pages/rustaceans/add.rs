@@ -12,7 +12,7 @@ pub fn rustaceans_add() -> Html {
                 </div>
                 <div class="col mt-3">
                     <Header />
-                    <RustaceanForm />
+                    // <RustaceanForm />
                 </div>
             </div>
         </div>

@@ -5,6 +5,7 @@ use super::login::Login;
 use super::not_found::NotFound;
 use super::rustaceans::index::Rustaceans;
 use super::rustaceans::add::RustaceansAdd;
+use super::rustaceans::edit::RustaceansEdit;
 
 
 #[derive(Routable, PartialEq, Clone)]
@@ -19,6 +20,8 @@ pub enum Route {
     Rustaceans,
     #[at("/rustaceans/add")]
     RustaceansAdd,
+    #[at("/rustaceans/:id/edit")]
+    RustaceansEdit {id: i32},
     #[not_found]
     #[at("/404")]
     NotFound,
@@ -37,6 +40,9 @@ pub fn switch(route: Route) -> Html {
         },
         Route::RustaceansAdd => html! {
             <RustaceansAdd />
+        },
+        Route::RustaceansEdit {id} => html! {
+            <RustaceansEdit  rustacean_id={id}/>
         },
         Route::NotFound => html! {
             <NotFound />

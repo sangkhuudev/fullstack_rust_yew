@@ -1,23 +1,35 @@
-use crate::components::{header::Header, sidebar::Sidebar, rustacean_list::RustaceanList};
+use crate::{components::{header::Header, sidebar::Sidebar, rustacean_list::RustaceanList}, context::CurrentUserContext, pages::navigator::Route};
 use yew::prelude::*;
+use yew_router::components::Redirect;
 
 #[function_component(Rustaceans)]
 pub fn rustaceans() -> Html {
+    let current_user_ctx = use_context::<CurrentUserContext>()
+        .expect("Current user context is missing");
 
-    let loading = html! { <p>{"Loading ......"}</p>};
-    html! {
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-auto">
-                    <Sidebar />
+    match &current_user_ctx.token {
+        Some(token) => {
+            let loading = html! { <p>{"Loading ......"}</p>};
+            html! {
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-auto">
+                            <Sidebar />
+                        </div>
+                        <div class="col mt-3">
+                            <Header />
+                            <Suspense fallback={loading}> 
+                                <RustaceanList token={token.clone()} />
+                            </Suspense>
+                        </div>
+                    </div>
                 </div>
-                <div class="col mt-3">
-                    <Header />
-                    <Suspense fallback={loading}> 
-                        <RustaceanList />
-                    </Suspense>
-                </div>
-            </div>
-        </div>
+            }
+        },
+        None => html! {
+            <Redirect<Route> to={Route::Login} />
+        }
+    
     }
+    
 }
