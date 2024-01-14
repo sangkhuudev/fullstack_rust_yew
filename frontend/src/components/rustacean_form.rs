@@ -5,6 +5,7 @@ use web_sys::HtmlInputElement;
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
+
 #[derive(Properties, PartialEq, Clone)]
 pub struct Props {
     pub rustacean: Option<Rustacean>,
