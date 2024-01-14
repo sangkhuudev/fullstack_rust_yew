@@ -1,3 +1,4 @@
+pub mod crates;
 pub mod user;
 pub mod rustaceans;
 

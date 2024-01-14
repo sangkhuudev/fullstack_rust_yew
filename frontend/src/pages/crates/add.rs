@@ -1,8 +1,9 @@
-use crate::components::{header::Header, sidebar::Sidebar, rustacean_form::RustaceanForm};
+use crate::components::{header::Header, sidebar::Sidebar};
+use crate::components::crate_form::CrateForm;
 use yew::prelude::*;
 
-#[function_component(RustaceansAdd)]
-pub fn rustaceans_add() -> Html {
+#[function_component(CrateAdd)]
+pub fn crate_add() -> Html {
     html! {
 
         <div class="container">
@@ -12,7 +13,7 @@ pub fn rustaceans_add() -> Html {
                 </div>
                 <div class="col mt-3">
                     <Header />
-                    <RustaceanForm rustacean={None}/>
+                    <CrateForm a_crate={None}/>
                 </div>
             </div>
         </div>

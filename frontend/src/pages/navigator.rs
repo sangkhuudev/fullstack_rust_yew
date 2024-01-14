@@ -1,5 +1,6 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
+use super::crates::add::CrateAdd;
 use super::home::Home;
 use super::login::Login;
 use super::not_found::NotFound;
@@ -7,7 +8,7 @@ use super::rustaceans::index::Rustaceans;
 use super::rustaceans::add::RustaceansAdd;
 use super::rustaceans::delete::RustaceansDelete;
 use super::rustaceans::edit::RustaceansEdit;
-
+use super::crates::{index::Crates};
 
 #[derive(Routable, PartialEq, Clone)]
 pub enum Route {
@@ -17,6 +18,12 @@ pub enum Route {
     Login,
     #[at("/crates")]
     Crates,
+    #[at("/crates/add")]
+    CratesAdd,
+    #[at("/crates/:id/edit")]
+    CratesEdit {id: i32},
+    #[at("/crates/:id/delete")]
+    CratesDelete {id: i32},
     #[at("/rustaceans")]
     Rustaceans,
     #[at("/rustaceans/add")]
@@ -53,8 +60,17 @@ pub fn switch(route: Route) -> Html {
         Route::NotFound => html! {
             <NotFound />
         },
-        _ => html! {
-            <Home />
+        Route::Crates => html! {
+            <Crates />
+        },
+        Route::CratesAdd => html! {
+            <CrateAdd />
+        },
+        Route::CratesEdit {id} => html! {
+            <Crates />
+        },
+        Route::CratesDelete {id} => html! {
+            <Crates/>
         },
     }
 }
