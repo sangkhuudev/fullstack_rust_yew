@@ -1,8 +1,11 @@
 use crate::api::crates::{Crate, api_crate_update, api_crate_create};
 use crate::api::rustaceans::Rustacean;
 use crate::pages::navigator::Route;
-use crate::{components::alert::*, components::input::*, context::*, components::select::Select};
-use web_sys::{HtmlInputElement, HtmlSelectElement};
+use crate::{
+    components::alert::*, components::input::*, context::*, 
+    components::select::Select, components::textarea::TextArea
+};
+use web_sys::{HtmlInputElement, HtmlSelectElement, HtmlTextAreaElement};
 use yew::{platform::spawn_local, prelude::*};
 use yew_router::prelude::*;
 
@@ -48,6 +51,16 @@ pub fn crate_form(props: &Props) -> Html {
     });
     let rustacean_id = (*rustacean_id_handle).clone();
 
+    let description_handle = use_state(|| {
+        if let Some(c) = &props.a_crate {
+            if let Some(description) = &c.description {
+                return description.clone();
+            }
+        }
+        String::default()
+    });
+    let description = (*description_handle).clone();
+
     let error_message_handle = use_state(String::default);
     let error_message = (*error_message_handle).clone();
 
@@ -77,10 +90,19 @@ pub fn crate_form(props: &Props) -> Html {
         }
     });
 
+    let description_changed = Callback::from(move |e: Event| {
+        let target = e.target_dyn_into::<HtmlTextAreaElement>();
+        if let Some(input) = target {
+            description_handle.set(input.value())
+        }
+    });
+
     let cloned_name = name.clone();
     let cloned_code = code.clone();
     let cloned_rustacean_id = rustacean_id.clone();
     let cloned_version = version.clone();
+    let cloned_description = description.clone();
+
     let cloned_a_crate = props.a_crate.clone();
     let onsubmit = Callback::from(move |e: SubmitEvent| {
         e.prevent_default();
@@ -88,6 +110,7 @@ pub fn crate_form(props: &Props) -> Html {
         let cloned_code = cloned_code.clone();
         let cloned_rustacean_id = cloned_rustacean_id.clone();
         let cloned_version = cloned_version.clone();
+        let cloned_description = cloned_description.clone();
 
         let cloned_error_handle = error_message_handle.clone();
         let cloned_navigator = navigator.clone();
@@ -116,7 +139,8 @@ pub fn crate_form(props: &Props) -> Html {
                                 &cloned_name, 
                                 &cloned_code,
                                 rustacean_id,
-                                &cloned_version
+                                &cloned_version,
+                                &cloned_description
                             ).await
                             {
                                 Ok(_) => cloned_navigator.push(&Route::Crates),
@@ -178,6 +202,14 @@ pub fn crate_form(props: &Props) -> Html {
                     options={options}
                 />
             </div>
+            <div class="mb-3">
+            <TextArea
+                label="Description"
+                name="description"
+                value={description}
+                onchange={description_changed}
+            />
+        </div>
             <button type="submit" class="btn btn-primary">{"Save"}</button>
         </form>
     }

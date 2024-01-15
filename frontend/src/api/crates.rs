@@ -45,6 +45,7 @@ pub async fn api_crate_create(
     code: &String,
     rustacean_id: i32,
     version: &String,
+    description: &String,
 ) -> Result<Crate, Error> {
     let response = Request::post(&format!("{}/crates", API_HOST))
         .header("Authorization", &format!("Bearer {}", token))
@@ -53,7 +54,8 @@ pub async fn api_crate_create(
             "name": name,
             "code": code,
             "rustacean_id": rustacean_id,
-            "version": version
+            "version": version,
+            "description": description
         }))?
         .send()
         .await?;

@@ -6,5 +6,6 @@ pub mod input;
 pub mod login_form;
 pub mod select;
 pub mod sidebar;
+pub mod textarea;
 pub mod rustacean_list;
 pub mod rustacean_form;
