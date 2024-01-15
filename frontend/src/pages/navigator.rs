@@ -1,6 +1,8 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
 use super::crates::add::CratesAdd;
+use super::crates::delete::CratesDelete;
+use super::crates::edit::CratesEdit;
 use super::crates::index::Crates;
 use super::home::Home;
 use super::login::Login;
@@ -67,10 +69,10 @@ pub fn switch(route: Route) -> Html {
             <CratesAdd  />
         },
         Route::CratesEdit {id} => html! {
-            <Crates />
+            <CratesEdit crate_id={id}/>
         },
         Route::CratesDelete {id} => html! {
-            <Crates/>
+            <CratesDelete crate_id={id}/>
         },
     }
 }

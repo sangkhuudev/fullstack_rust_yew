@@ -69,12 +69,18 @@ pub async fn api_crate_update(
     id: i32,
     name: &String,
     code: &String,
+    rustacean_id: i32,
+    version: &String,
+    description: &String,
 ) -> Result<Crate, Error> {
     let response = Request::put(&format!("{}/crates/{}", API_HOST, id))
         .header("Authorization", &format!("Bearer {}", token))
         .json(&json!({
             "name": name,
             "code": code,
+            "rustacean_id": rustacean_id,
+            "version": version,
+            "description": description
         }))?
         .send()
         .await?;

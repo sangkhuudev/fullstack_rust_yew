@@ -128,6 +128,9 @@ pub fn crate_form(props: &Props) -> Html {
                                 a_crate.id,
                                 &cloned_name,
                                 &cloned_code,
+                                rustacean_id,
+                                &cloned_version,
+                                &cloned_description
                             )
                             .await {
                                 Ok(_) => cloned_navigator.push(&Route::Crates),

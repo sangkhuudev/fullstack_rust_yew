@@ -1,13 +1,18 @@
 use crate::{
     components::{header::Header, sidebar::Sidebar, crate_form::CrateForm}, 
-    context::CurrentUserContext, pages::navigator::Route, hooks::use_rustaceans
+    context::CurrentUserContext, pages::navigator::Route, hooks::{use_crate, use_rustaceans},
 };
 use yew::prelude::*;
 use yew_router::components::Redirect;
 
 
-#[function_component(CratesAdd)]
-pub fn crates_add() -> Html {
+#[derive(Properties, PartialEq)]
+pub struct Props {
+    pub crate_id: i32,
+}
+
+#[function_component(CratesEdit)]
+pub fn crates_edit(props: &Props) -> Html {
     let current_user_ctx = use_context::<CurrentUserContext>()
     .expect("Current user context is missing");
 
@@ -23,7 +28,8 @@ pub fn crates_add() -> Html {
                         <div class="col mt-3">
                             <Header />
                             <Suspense fallback={loading}>
-                                <CrateAddForm 
+                                <CratesEditForm 
+                                    crate_id={props.crate_id} 
                                     token={token.clone()}
                                 />
                             </Suspense>
@@ -40,17 +46,19 @@ pub fn crates_add() -> Html {
 }
 
 
+
 #[derive(Properties, PartialEq)]
-pub struct CrateAddFormProps {
+pub struct CratesEditFormProps {
+    pub crate_id: i32,
     pub token: AttrValue,
 }
 
-#[function_component(CrateAddForm)]
-fn crate_add_form(props: &CrateAddFormProps) -> HtmlResult {
+#[function_component(CratesEditForm)]
+fn crates_edit_form(props: &CratesEditFormProps) -> HtmlResult {
+    let a_crate = use_crate(&props.token, props.crate_id.clone())?;
     let rustaceans = use_rustaceans(&props.token)?;
-
     Ok(html! {
-        <CrateForm a_crate={None} authors={rustaceans} />
+        <CrateForm a_crate={a_crate} authors={rustaceans} />
     })
 
 }
