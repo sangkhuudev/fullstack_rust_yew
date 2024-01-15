@@ -20,7 +20,7 @@ pub struct Crate {
 
 
 pub async fn api_crates(token: &str) -> Result<Vec<Crate>, Error> {
-    let response = Request::get(&format!("{}/rustaceans", API_HOST))
+    let response = Request::get(&format!("{}/crates", API_HOST))
         .header("Authorization", &format!("Bearer {}", token))
         .send()
         .await?;
@@ -43,12 +43,17 @@ pub async fn api_crate_create(
     token: &String,
     name: &String,
     code: &String,
+    rustacean_id: i32,
+    version: &String,
 ) -> Result<Crate, Error> {
     let response = Request::post(&format!("{}/crates", API_HOST))
         .header("Authorization", &format!("Bearer {}", token))
+        .header("accept", "application/json")
         .json(&json!({
             "name": name,
             "code": code,
+            "rustacean_id": rustacean_id,
+            "version": version
         }))?
         .send()
         .await?;

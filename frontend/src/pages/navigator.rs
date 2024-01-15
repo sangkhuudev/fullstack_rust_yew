@@ -1,6 +1,7 @@
 use yew::prelude::*;
 use yew_router::prelude::*;
-use super::crates::add::CrateAdd;
+use super::crates::add::CratesAdd;
+use super::crates::index::Crates;
 use super::home::Home;
 use super::login::Login;
 use super::not_found::NotFound;
@@ -8,7 +9,6 @@ use super::rustaceans::index::Rustaceans;
 use super::rustaceans::add::RustaceansAdd;
 use super::rustaceans::delete::RustaceansDelete;
 use super::rustaceans::edit::RustaceansEdit;
-use super::crates::{index::Crates};
 
 #[derive(Routable, PartialEq, Clone)]
 pub enum Route {
@@ -64,7 +64,7 @@ pub fn switch(route: Route) -> Html {
             <Crates />
         },
         Route::CratesAdd => html! {
-            <CrateAdd />
+            <CratesAdd  />
         },
         Route::CratesEdit {id} => html! {
             <Crates />
